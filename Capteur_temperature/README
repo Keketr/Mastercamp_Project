@@ -1,0 +1,21 @@
+Consigne pour tester le capteur ultrason :
+
+1) Connecter le Vout du LM35DZ à la broche analogique A0 de l'Arduino.
+
+2) Connecter le Vcc du LM35DZ à la broche 5V de l'Arduino.
+
+3) Connecter le GND du LM35DZ à la broche GND de l'Arduino.
+
+4) Ouvrir l'Arduino IDE sur votre ordinateur.
+
+5) Copier le code suivant dans l'éditeur de l'Arduino IDE
+
+6) Sélectionner le bon port série et la carte Arduino dans le menu Tools de l'IDE Arduino.
+
+7) Cliquer sur le bouton Upload pour téléverser le code sur l'Arduino.
+
+Test : 
+
+1) Ouvrir le Moniteur Série dans l'IDE Arduino (Ctrl+Maj+M ou via le menu Tools).
+
+2) Observer les valeurs de température affichées, qui devraient correspondre à la température ambiante.

@@ -1,0 +1,23 @@
+Consigne pour tester le capteur ultrason :
+
+1) Connecter le Vcc du capteur à la broche de 5V de notre microcontrôleur (Arduino je crois)
+
+2) Connecter le GNG du capteur à la broche GND de l'Arduino
+
+3) Connecter la broche Trig du capteur à la broche numérique D2 de l'Arduino
+
+4) Connecter la broche Echo du capteur à la broche numérique D3 de l'Arduino
+
+5) Ouvrir l'Arduino IDE 
+
+6) Mettre le code 
+
+7) Sélectionner le bon port série et la carte Arduino dans le menu Tools de l'IDE Arduino
+
+8) Cliquer sur le bouton Upload pour téléverser le code sur l'Arduino
+
+Test : 
+
+1) Ouvrir le Moniteur Série dans l'IDE Arduino (Ctrl+Maj+M ou via le menu Tools).
+
+2) Observer les valeurs de distance affichées, qui devraient changer en fonction de la distance entre le capteur et les objets devant lui.

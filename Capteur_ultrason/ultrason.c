@@ -1,8 +1,8 @@
 #include <xc.h>
 
 #define _XTAL_FREQ 4000000  // Fréquence d'horloge
-#define TRIG RB0
-#define ECHO RB1
+#define TRIG RC2
+#define ECHO RC1
 
 void init_UART() {
     // Initialisation du UART pour la communication série

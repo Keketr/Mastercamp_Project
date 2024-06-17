@@ -1,28 +1,65 @@
-const int trigPin = 2;
-const int echoPin = 3;
-long duration;
-int distance;
+#include <xc.h>
 
-void setup() {
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  Serial.begin(9600);
+#define _XTAL_FREQ 4000000  // Fréquence d'horloge
+#define TRIG RB0
+#define ECHO RB1
+
+void init_UART() {
+    // Initialisation du UART pour la communication série
+    TXSTAbits.SYNC = 0;
+    TXSTAbits.BRGH = 1;
+    SPBRG = 25;  // Baud rate 9600, Fosc = 4MHz
+    RCSTAbits.SPEN = 1;
+    TXSTAbits.TXEN = 1;
 }
 
-void loop() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
+void UART_send_char(char c) {
+    while (!TXSTAbits.TRMT);
+    TXREG = c;
+}
 
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+void UART_send_string(const char* s) {
+    while (*s) {
+        UART_send_char(*s++);
+    }
+}
 
-  duration = pulseIn(echoPin, HIGH);
-  distance = duration * 0.034 / 2;
+void init_HCSR04() {
+    TRISB0 = 0;  // RB0 comme sortie (Trig)
+    TRISB1 = 1;  // RB1 comme entrée (Echo)
+}
 
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
+unsigned int measure_distance() {
+    unsigned int duration = 0;
+    unsigned int distance = 0;
 
-  delay(1000);
+    TRIG = 0;  // Trig bas
+    __delay_us(2);
+    TRIG = 1;  // Trig haut
+    __delay_us(10);
+    TRIG = 0;  // Trig bas
+
+    while (!ECHO);  // Attendre le début de l'echo
+    while (ECHO) {  // Mesurer la durée de l'echo
+        __delay_us(1);
+        duration++;
+    }
+
+    distance = (duration * 0.034) / 2;  // Calculer la distance
+    return distance;
+}
+
+void main() {
+    unsigned int distance;
+    char buffer[10];
+
+    init_UART();
+    init_HCSR04();
+
+    while (1) {
+        distance = measure_distance();
+        sprintf(buffer, "Dist: %ucm\n", distance);
+        UART_send_string(buffer);
+        __delay_ms(1000);  // Attendre 1 seconde avant de mesurer à nouveau
+    }
 }
